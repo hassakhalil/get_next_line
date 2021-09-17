@@ -1,5 +1,6 @@
 #ifndef	GET_NEXT_LINE_H
 #define GET_NEXT_LINE_H
 #include <unstd.h>
-#define BUF_SIZE 100
+static int	BUF_SIZE = 10;
+char	*get_next_line(int fd);
 #endif

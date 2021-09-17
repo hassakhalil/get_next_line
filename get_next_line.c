@@ -2,10 +2,8 @@
 
 char	*get_next_line(int fd)
 {
-	char	*buf[BUF_SIZE];
-	int	ret;
+	char		*buf[BUF_SIZE + 1];
+	int		ret;
 
-	while (ret = read(fd, buf, BUF_SIZE))
-		buf[ret] = 0;
-
+	ret = read(fd, buf, BUF_SIZE);
 }
