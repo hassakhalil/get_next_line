@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:52:53 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/21 12:53:00 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/21 18:58:45 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
@@ -76,4 +78,31 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	s[i + j] = 0;
 	return (s);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*copy;
+
+	copy = malloc(ft_strlen(s) + 1);
+	if (!copy)
+		return (0);
+	return (ft_memcpy(copy, s, ft_strlen(s) + 1));
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t	i;
+
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	if (dest == src)
+		return (dest);
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
+		i++;
+	}
+	return (dest);
 }
