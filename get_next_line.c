@@ -1,24 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
+/*   Updated: 2021/11/21 12:51:43 by hkhalil          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
-	char	buf[BUF_SIZE];
-	char	line[BUFF_size];
-	size_t	ret;
+	char	*buf;
+	char	*line;
+	ssize_t	ret;
 	int		i;
 
-	buf = malloc(sizeof(char) * (BUF_SIZE));
+	buf = malloc(sizeof(char) * (BUFFER_SIZE));
 	if (!buf)
 		return (0);
 	while (1)
 	{
-		ret = read(fd, buf, BUF_SIZE);
+		ret = read(fd, buf, BUFFER_SIZE);
 		if (ret == -1)
-			reuturn (0);
+			return (0);
 		else if (ret == 0)
 			return (line);
 		i = 0;
-		while (buf[i] != '\n' && buf[i] != EOF && i < BUF_SIZE)
+		while (buf[i] != '\n' && buf[i] != EOF && i < BUFFER_SIZE)
 			i++;
 		if (buf[i] == '\n')
 		{
