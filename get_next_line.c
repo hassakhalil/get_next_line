@@ -1,30 +1,32 @@
-#icnlude "get_next_line.h"
+#include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
 	char	buf[BUF_SIZE];
-	char	*line;
+	char	line[BUFF_size];
 	size_t	ret;
-	int		i = 0;
+	int		i;
 
-	if (!count)
-	{
-		buf = malloc(sizeof(char) * BUF_SIZE);
-		ret = read(fd, buf, BUF_SIZE);
-		if (!ret)
-			return (0);
-	}
-	while (buf[index] != EOF && index < ret)
-	{
-		if (buff[index] == '\n')
-			break;
-		index++;
-	}
-	line = malloc(sizeof(char) * (index + 2));
-	next_line = malloc(sizeof(char) * (ret - index + 1));
-	if (!line || !next_line)
+	buf = malloc(sizeof(char) * (BUF_SIZE));
+	if (!buf)
 		return (0);
-	if (ret = index + 1 || buf)
-		index = 0;
-	return ((char *)ft_substr(buf, Count, i + 1));
-}
+	while (1)
+	{
+		ret = read(fd, buf, BUF_SIZE);
+		if (ret == -1)
+			reuturn (0);
+		else if (ret == 0)
+			return (line);
+		i = 0;
+		while (buf[i] != '\n' && buf[i] != EOF && i < BUF_SIZE)
+			i++;
+		if (buf[i] == '\n')
+		{
+			i++;
+			line = ft_strjoin(line, ft_substr(buf, 0, i + 1));
+			return (line);
+		}
+		line = ft_strjoin(line, ft_substr(buf, 0, i + 1));
+	}
+	return (line);
+}	
