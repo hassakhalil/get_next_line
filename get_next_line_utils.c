@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:52:53 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/21 18:58:45 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/22 02:51:25 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ char	*ft_strdup(const char *s)
 {
 	char	*copy;
 
+    if (!s)
+        return (0);
 	copy = malloc(ft_strlen(s) + 1);
 	if (!copy)
 		return (0);
@@ -94,8 +96,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	size_t	i;
 
-	if (dest == NULL && src == NULL)
-		return (NULL);
+	if (!dest && !src)
+		return (0);
 	if (dest == src)
 		return (dest);
 	i = 0;
