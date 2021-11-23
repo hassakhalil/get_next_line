@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:52:53 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/23 10:22:45 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/23 13:19:13 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (0);
 	if (ft_strlen(s) <= start || !len)
 		sub = malloc(1);
-	else if (ft_strlen(s) <= len + start)
+    else if (ft_strlen(s) <= len + start)
 		sub = malloc(ft_strlen(s) - start + 1);
     else
     	sub = malloc(len + 1);
@@ -40,7 +40,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	sub[i] = 0;
 
    // free((char *)s);
-	return ((char *)sub);
+	return (sub);
 }
 
 size_t	ft_strlen(const char *s)
@@ -85,8 +85,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	    }
     }
 	s[i + j] = 0;
-    //free((char *)s1);
-   // free((char *)s2);
+    free((char *)s1);
+    free((char *)s2);
 	return (s);
 }
 
@@ -94,8 +94,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	size_t	i;
 
-	if (dest == NULL && src == NULL)
-		return (NULL);
+	if (!dest || !src)
+		return (0);
 	if (dest == src)
 		return (dest);
 	i = 0;
