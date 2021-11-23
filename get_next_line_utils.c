@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:52:53 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/22 02:51:25 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/23 10:22:45 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		sub = malloc(1);
 	else if (ft_strlen(s) <= len + start)
 		sub = malloc(ft_strlen(s) - start + 1);
-	else
-		sub = malloc(len + 1);
+    else
+    	sub = malloc(len + 1);
 	if (!sub)
 		return (0);
 	i = 0;
@@ -38,6 +38,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		}
 	}
 	sub[i] = 0;
+
+   // free((char *)s);
 	return ((char *)sub);
 }
 
@@ -59,45 +61,41 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		j;
 	char	*s;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (0);
 	s = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!s)
 		return (0);
 	i = 0;
-	while (s1[i])
-	{
-		s[i] = s1[i];
-		i++;
-	}
+    if (s1)
+    {
+	    while (s1[i])
+	    {
+		    s[i] = s1[i];
+		    i++;
+	    }
+    }
 	j = 0;
-	while (s2[j])
-	{
-		s[i + j] = s2[j];
-		j++;
-	}
+    if (s2)
+    {
+	    while (s2[j])
+	    {
+	    	s[i + j] = s2[j];
+	    	j++;
+	    }
+    }
 	s[i + j] = 0;
+    //free((char *)s1);
+   // free((char *)s2);
 	return (s);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*copy;
-
-    if (!s)
-        return (0);
-	copy = malloc(ft_strlen(s) + 1);
-	if (!copy)
-		return (0);
-	return (ft_memcpy(copy, s, ft_strlen(s) + 1));
 }
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
 	size_t	i;
 
-	if (!dest && !src)
-		return (0);
+	if (dest == NULL && src == NULL)
+		return (NULL);
 	if (dest == src)
 		return (dest);
 	i = 0;
