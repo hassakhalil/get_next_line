@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/23 22:15:17 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/23 22:29:51 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ char	*get_next_line(int fd)
 	char        *line = NULL;
     char        *tmp;
     static char *NEXT_LINE = NULL;
-	ssize_t     ret = 0;
+	ssize_t     ret;
 	int         i = 0;
 
     while (1)
 	{
-        if (!i && ft_strlen(NEXT_LINE))
+        if (!i && !NEXT_LINE)
         {
             line = ft_memcpy(line, NEXT_LINE, ft_strlen(NEXT_LINE) + 1);
             free(NEXT_LINE);
@@ -41,12 +41,9 @@ char	*get_next_line(int fd)
         if (ret == 0)
         {
             free(buf);
-            if (!line)
-            {
-                free(line);
-                return (0);
-            }
-            return (line);
+            if (line)
+                return (line);
+            return (0);
         }
         buf[ret] = 0;
 		i = 0;
