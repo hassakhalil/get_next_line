@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/23 13:22:08 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/23 22:15:17 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 char	*get_next_line(int fd)
 {
 	char        *buf = malloc(BUFFER_SIZE + 1);
-	char        *line = malloc(BUFFER_SIZE + 1);
-    char        *tmp0;
-    //char        **tmp1;
-    static char *NEXT_LINE;
+	char        *line = NULL;
+    char        *tmp;
+    static char *NEXT_LINE = NULL;
 	ssize_t     ret = 0;
 	int         i = 0;
 
@@ -35,31 +34,32 @@ char	*get_next_line(int fd)
         {
             free(buf);
             free(line);
-			return (0);
+            if (NEXT_LINE)
+                free (NEXT_LINE);
+            return (0);
         }
-		if (ret == 0)
+        if (ret == 0)
         {
             free(buf);
-            free(line);
-            free(NEXT_LINE);
-
-			return (0);
+            if (!line)
+            {
+                free(line);
+                return (0);
+            }
+            return (line);
         }
         buf[ret] = 0;
 		i = 0;
 		while (buf[i] != '\n' && i < ret)
 		    i++;
-        tmp0 = ft_substr(buf, 0, i + 1);
-        //tmp1 = ft_memcpy(tmp1, line, ft_strlen(line) + 1);
-	    line = ft_strjoin(line, tmp0);
-       // free(tmp0);
-        //free(*tmp1);
+        tmp = ft_substr(buf, 0, i + 1);
+	    line = ft_strjoin(line, tmp);
         if (buf[i] == '\n')
         {
             i++;
-            tmp0 = ft_substr(buf, i, BUFFER_SIZE + 1);
-            NEXT_LINE = ft_memcpy(NEXT_LINE, tmp0, ft_strlen(tmp0) + 1);
-            free(tmp0);
+            tmp = ft_substr(buf, i, BUFFER_SIZE + 1);
+            NEXT_LINE = ft_memcpy(NEXT_LINE, tmp, ft_strlen(tmp) + 1);
+            free(tmp);
             free(buf);
             return (line);
         }
