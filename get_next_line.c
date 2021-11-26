@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/26 07:54:11 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/26 08:54:12 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*get_next_line(int fd)
             return (line);
         }
         ret = read(fd, buff, BUFFER_SIZE);
+        if (buff[ret] == EOF)
+            ret = 0;
         if (ret == -1 || ret == 0)
         {
             if (line)
