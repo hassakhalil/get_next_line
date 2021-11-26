@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/26 07:36:10 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/26 07:54:11 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,12 @@ char	*get_next_line(int fd)
             i = 0;
             while (buff[i] != '\n')
                 i++;
-            line = ft_strjoin(rest, ft_substr(buff, 0, i + 1));
+            tmp = ft_substr(buff, 0, i + 1);
+            line = ft_strjoin(rest, tmp);
+            free(tmp);
+            tmp = rest;
             rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
+            free(tmp);
             free(buff);
             return (line);
         }
