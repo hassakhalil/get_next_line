@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/23 22:29:51 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/26 07:36:10 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,56 @@
 
 char	*get_next_line(int fd)
 {
-	char        *buf = malloc(BUFFER_SIZE + 1);
-	char        *line = NULL;
+    char        *buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    char        *line = NULL;
+    static char *rest = NULL;
     char        *tmp;
-    static char *NEXT_LINE = NULL;
-	ssize_t     ret;
-	int         i = 0;
+    int         i;
+    ssize_t     ret;
 
     while (1)
-	{
-        if (!i && !NEXT_LINE)
+    {
+        if (rest && ft_strchr(rest, '\n'))
         {
-            line = ft_memcpy(line, NEXT_LINE, ft_strlen(NEXT_LINE) + 1);
-            free(NEXT_LINE);
-            NEXT_LINE = 0;
-        }
-        ret = read(fd, buf, BUFFER_SIZE);
-		if (ret == -1)
-        {
-            free(buf);
-            free(line);
-            if (NEXT_LINE)
-                free (NEXT_LINE);
-            return (0);
-        }
-        if (ret == 0)
-        {
-            free(buf);
-            if (line)
-                return (line);
-            return (0);
-        }
-        buf[ret] = 0;
-		i = 0;
-		while (buf[i] != '\n' && i < ret)
-		    i++;
-        tmp = ft_substr(buf, 0, i + 1);
-	    line = ft_strjoin(line, tmp);
-        if (buf[i] == '\n')
-        {
-            i++;
-            tmp = ft_substr(buf, i, BUFFER_SIZE + 1);
-            NEXT_LINE = ft_memcpy(NEXT_LINE, tmp, ft_strlen(tmp) + 1);
+            i = 0;
+            while (rest[i] != '\n')
+                 i++;
+            line = ft_substr(rest, 0, i + 1);
+            tmp = rest;
+            rest = ft_substr(rest, i + 1, ft_strlen(rest) - i);
             free(tmp);
-            free(buf);
+            free(buff);
             return (line);
         }
+        ret = read(fd, buff, BUFFER_SIZE);
+        if (ret == -1 || ret == 0)
+        {
+            if (line)
+                free(line);
+            if (rest)
+                free(rest);
+            free(buff);
+            return(0);
+        }
+        buff[ret] = 0;
+        if (ft_strchr(buff, '\n'))
+        {
+            i = 0;
+            while (buff[i] != '\n')
+                i++;
+            line = ft_strjoin(rest, ft_substr(buff, 0, i + 1));
+            rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
+            free(buff);
+            return (line);
+        }
+        else
+        {
+            tmp = rest;
+            rest = ft_strjoin(rest, buff);
+            free(tmp);
+        }
     }
-	return (0);
+    return (0);
 }
 
 /*#include <fcntl.h>
