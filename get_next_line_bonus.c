@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/28 00:29:53 by hkhalil          ###   ########.fr       */
+/*   Created: 2021/11/28 00:30:55 by hkhalil           #+#    #+#             */
+/*   Updated: 2021/11/28 00:31:00 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,3 @@ char	*get_next_line(int fd)
     }
     return (0);
 }
-
-/*#include <fcntl.h>
-
-int main()
-{
-    int fd = open("41_with_nl", O_RDWR);
-    char *line = get_next_line(fd);
-    while (line)
-    {
-        printf("%s", line);
-        line = get_next_line(fd);
-    }
-    return (0);
-}*/
