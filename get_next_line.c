@@ -6,7 +6,7 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:51:36 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/26 08:54:12 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/27 12:29:06 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,57 +16,58 @@ char	*get_next_line(int fd)
 {
     char        *buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
     char        *line = NULL;
-    static char *rest = NULL;
+    static char *rest;
     char        *tmp;
     int         i;
     ssize_t     ret;
 
+    rest = ft_strdup("");
     while (1)
     {
-        if (rest && ft_strchr(rest, '\n'))
+        if (ft_strchr(rest, '\n'))
         {
             i = 0;
             while (rest[i] != '\n')
-                 i++;
+                i++;
             line = ft_substr(rest, 0, i + 1);
             tmp = rest;
-            rest = ft_substr(rest, i + 1, ft_strlen(rest) - i);
+            rest = ft_strdup(&rest[i + 1]);
             free(tmp);
             free(buff);
             return (line);
         }
         ret = read(fd, buff, BUFFER_SIZE);
-        if (buff[ret] == EOF)
-            ret = 0;
-        if (ret == -1 || ret == 0)
+        if (ret == -1)
         {
+            free(rest);
             if (line)
                 free(line);
-            if (rest)
-                free(rest);
             free(buff);
-            return(0);
+            return (0);
         }
         buff[ret] = 0;
-        if (ft_strchr(buff, '\n'))
+        tmp = rest;
+        rest = ft_strjoin(rest, buff);
+        free(tmp);
+        if (ft_strchr(rest, '\n'))
         {
             i = 0;
-            while (buff[i] != '\n')
+            while (rest[i] != '\n')
                 i++;
-            tmp = ft_substr(buff, 0, i + 1);
-            line = ft_strjoin(rest, tmp);
-            free(tmp);
+            line = ft_substr(rest, 0, i + 1);
             tmp = rest;
-            rest = ft_substr(buff, i + 1, ft_strlen(buff) - i);
+            rest = ft_strdup(&rest[i + 1]);
             free(tmp);
             free(buff);
+            free(rest);
             return (line);
         }
-        else
+        else if (ret < BUFFER_SIZE)
         {
-            tmp = rest;
-            rest = ft_strjoin(rest, buff);
-            free(tmp);
+            line = ft_strdup(rest);
+            free(rest);
+            free(buff);
+            return (line);
         }
     }
     return (0);
@@ -76,7 +77,7 @@ char	*get_next_line(int fd)
 
 int main()
 {
-    int fd = open("get_next_line.c", O_RDWR);
+    int fd = open("41_no_nl", O_RDWR);
     char *line = get_next_line(fd);
     while (line)
     {
