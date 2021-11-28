@@ -12,27 +12,27 @@
 
 #include "get_next_line.h"
 
-char	*rest_with_nl(char *rest)
+char	*rest_with_nl(char **rest)
 {
 	int		i;
 	char	*line;
 	char	*tmp;
 
 	i = 0;
-	while (rest[i] != '\n')
+	while ((*rest)[i] != '\n')
 		i++;
-	line = ft_substr(rest, 0, i + 1);
+	line = ft_substr((*rest), 0, i + 1);
 	if (!line)
 		return (0);
-	tmp = rest;
-	rest = ft_strdup(&rest[i + 1]);
-	if (!rest)
+	tmp = *rest;
+	(*rest) = ft_strdup(&(*rest)[i + 1]);
+	if (!(*rest))
 		return (0);
 	free(tmp);
 	return (line);
 }
 
-size_t	read_new_buff(char *rest, int fd)
+size_t	read_new_buff(char **rest, int fd)
 {
 	char	buff[BUFFER_SIZE + 1];
 	char	*tmp;
@@ -41,34 +41,34 @@ size_t	read_new_buff(char *rest, int fd)
 	ret = read(fd, buff, BUFFER_SIZE);
 	if (ret == -1)
 	{
-		free(rest);
-		rest = NULL;
+		free(*rest);
+		(*rest) = NULL;
 		return (0);
 	}
 	buff[ret] = 0;
-	tmp = rest;
-	rest = ft_strjoin(rest, buff);
-	if (!rest)
+	tmp = (*rest);
+	(*rest) = ft_strjoin((*rest), buff);
+	if (!(*rest))
 		return (0);
 	free(tmp);
 	return (ret);
 }
 
-char	*last_line(char *rest, int ret)
+char	*last_line(char **rest, int ret)
 {
 	char	*line;
 
-	if (ret == 0 && !ft_strlen(rest))
+	if (ret == 0 && !ft_strlen(*rest))
 	{
-		free(rest);
-		rest = NULL;
+		free(*rest);
+		(*rest) = NULL;
 		return (0);
 	}
-	line = ft_strdup(rest);
+	line = ft_strdup(*rest);
 	if (!line)
 		return (0);
-	free(rest);
-	rest = NULL;
+	free(*rest);
+	(*rest) = NULL;
 	return (line);
 }
 
@@ -88,12 +88,12 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		if (rest && ft_strchr(rest, '\n'))
-			return (rest_with_nl(rest));
-		ret = read_new_buff(rest, fd);
+			return (rest_with_nl(&rest));
+		ret = read_new_buff(&rest, fd);
 		if (ft_strchr(rest, '\n'))
-			return (rest_with_nl(rest));
+			return (rest_with_nl(&rest));
 		else if (ret < BUFFER_SIZE)
-			return (last_line(rest, ret));
+			return (last_line(&rest, ret));
 	}
 	return (0);
 }
