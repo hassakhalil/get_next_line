@@ -6,11 +6,12 @@
 /*   By: hkhalil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 12:52:53 by hkhalil           #+#    #+#             */
-/*   Updated: 2021/11/27 15:06:49 by hkhalil          ###   ########.fr       */
+/*   Updated: 2021/11/28 01:15:02 by hkhalil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
 char	*ft_strchr(const char *s, int c)
 {
     int i;
