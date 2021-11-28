@@ -12,13 +12,28 @@
 
 #include "get_next_line_bonus.h"
 
+char	*ft_check(char **rest, int fd)
+{
+	int		i;
+	char	*line;
+	char	*tmp;
+
+	i = 0;
+	while (rest[fd][i] != '\n')
+		i++;
+	line = ft_substr(rest[fd], 0, i + 1);
+	tmp = rest[fd];
+	rest[fd] = ft_strdup(&rest[fd][i + 1]);
+	free(tmp);
+	return (line);
+}
 char	*get_next_line(int fd)
 {
 	char		buff[BUFFER_SIZE + 1];
 	char		*line;
 	static char	*rest[OPEN_MAX];
 	char		*tmp;
-	int			i;
+	//int			i;
 	ssize_t		ret;
 
 	if (BUFFER_SIZE <= 0 || fd < 0)
@@ -30,16 +45,7 @@ char	*get_next_line(int fd)
 		if (rest[fd])
 		{
 			if(ft_strchr(rest[fd], '\n'))
-			{
-				i = 0;
-				while (rest[fd][i] != '\n')
-					i++;
-				line = ft_substr(rest[fd], 0, i + 1);
-				tmp = rest[fd];
-				rest[fd] = ft_strdup(&rest[fd][i + 1]);
-				free(tmp);
-				return (line);
-			}
+				return (ft_check(rest, fd));
 		}
 		ret = read(fd, buff, BUFFER_SIZE);
 		if (ret == -1)
@@ -53,16 +59,7 @@ char	*get_next_line(int fd)
 		rest[fd] = ft_strjoin(rest[fd], buff);
 		free(tmp);
 		if (ft_strchr(rest[fd], '\n'))
-		{
-			i = 0;
-			while (rest[fd][i] != '\n')
-				i++;
-			line = ft_substr(rest[fd], 0, i + 1);
-			tmp = rest[fd];
-			rest[fd] = ft_strdup(&rest[fd][i + 1]);
-			free(tmp);
-			return (line);
-		}
+			return (ft_check(rest, fd));
 		else if (ret < BUFFER_SIZE)
 		{
 			if (ret == 0 && !ft_strlen(rest[fd]))
