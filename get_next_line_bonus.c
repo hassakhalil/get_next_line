@@ -77,8 +77,6 @@ char	*get_next_line(int fd)
 	static char	*rest[OPEN_MAX];
 	ssize_t		ret;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
-		return (0);
 	if (!rest[fd])
 	{
 		rest[fd] = ft_strdup("");
